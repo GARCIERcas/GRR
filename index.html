@@ -9,9 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kenia&display=swap" rel="stylesheet">
+    <script async src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
+    
     <div class="container">
         <header class="header">
             <div class="header_container">
@@ -160,7 +162,7 @@
                     <div class="slider-button" onclick="nextSlide()"><img src="img/стрелка вправо.svg" alt=">"></div>
                 </div>
                 
-                <button class="custom-button">старт</button>
+                <button class="custom-button" id="start-button">старт</button>
                 
 
                 
@@ -170,78 +172,87 @@
 
 
     <script>
-        const values = [1, 3, 5, 7]; // Возможные значения ловушек
-        let currentIndex = 0; // Индекс текущего значения
-        const slider = document.getElementById('slider-number');
-        const fieldBlocks = document.querySelectorAll('.playing_field_block'); // Все клетки
-        let isAnimating = false;
+        
 
-        function updateCounter() {
-            slider.textContent = values[currentIndex];
-        }
+            document.addEventListener('DOMContentLoaded', () => {
+            // Теперь объект Telegram доступен
+            const user = Telegram.WebApp.initDataUnsafe.user;
+            console.log(user); // Вывод информации о пользователе в консоль
 
-        function prevSlide() {
-            if (currentIndex > 0) {
-                currentIndex--;
+            const values = [1, 3, 5, 7]; // Возможные значения ловушек
+            let currentIndex = 0; // Индекс текущего значения
+            const slider = document.getElementById('slider-number');
+            const fieldBlocks = document.querySelectorAll('.playing_field_block'); // Все клетки
+            let isAnimating = false;
+
+            function updateCounter() {
+                slider.textContent = values[currentIndex];
             }
-            updateCounter();
-        }
 
-        function nextSlide() {
-            if (currentIndex < values.length - 1) {
-                currentIndex++;
-            }
-            updateCounter();
-        }
-
-        // Логика для кнопки "старт"
-        const startBtn = document.querySelector('.custom-button');
-        startBtn.addEventListener('click', () => {
-            if (isAnimating) return; // Если анимация ещё идёт, игнорируем нажатие
-
-            isAnimating = true; // Блокируем повторное нажатие
-            startBtn.setAttribute('disabled', true); // Отключаем кнопку
-            const trapCount = values[currentIndex]; // Текущее количество ловушек
-            const openCount = trapCount === 1 ? 10 : trapCount === 3 ? 5 : trapCount === 5 ? 4 : 3; // Количество клеток
-            const randomIndexes = [];
-
-            // Генерируем уникальные случайные индексы для открытия клеток
-            while (randomIndexes.length < openCount) {
-                const randomIndex = Math.floor(Math.random() * fieldBlocks.length);
-                if (!randomIndexes.includes(randomIndex)) {
-                    randomIndexes.push(randomIndex);
+            function prevSlide() {
+                if (currentIndex > 0) {
+                    currentIndex--;
                 }
+                updateCounter();
             }
 
-            // Сбрасываем ранее открытые клетки
-            fieldBlocks.forEach(block => {
-                block.classList.remove('open');
-                const img = block.querySelector('img');
-                img.style.opacity = '0';
-                img.style.transform = 'scale(0)';
-            });
+            function nextSlide() {
+                if (currentIndex < values.length - 1) {
+                    currentIndex++;
+                }
+                updateCounter();
+            }
 
-            // Анимация открытия клеток
-            randomIndexes.forEach((index, i) => {
-                setTimeout(() => {
-                    const block = fieldBlocks[index];
-                    block.classList.add('open');
+            // Логика для кнопки "старт"
+            const startBtn = document.getElementById('start-button');
+            startBtn.addEventListener('click', () => {
+                if (isAnimating) return; // Если анимация ещё идёт, игнорируем нажатие
+
+                isAnimating = true; // Блокируем повторное нажатие
+                startBtn.setAttribute('disabled', true); // Отключаем кнопку
+                const trapCount = values[currentIndex]; // Текущее количество ловушек
+                const openCount = trapCount === 1 ? 10 : trapCount === 3 ? 5 : trapCount === 5 ? 4 : 3; // Количество клеток
+                const randomIndexes = [];
+
+                // Генерируем уникальные случайные индексы для открытия клеток
+                while (randomIndexes.length < openCount) {
+                    const randomIndex = Math.floor(Math.random() * fieldBlocks.length);
+                    if (!randomIndexes.includes(randomIndex)) {
+                        randomIndexes.push(randomIndex);
+                    }
+                }
+
+                // Сбрасываем ранее открытые клетки
+                fieldBlocks.forEach(block => {
+                    block.classList.remove('open');
+                    const img = block.querySelector('img');
+                    img.style.opacity = '0';
+                    img.style.transform = 'scale(0)';
+                });
+
+                // Анимация открытия клеток
+                randomIndexes.forEach((index, i) => {
                     setTimeout(() => {
-                        const img = block.querySelector('img');
-                        img.style.opacity = '1';
-                        img.style.transform = 'scale(1)';
-                    }, 600);
-                }, i * 600);
+                        const block = fieldBlocks[index];
+                        block.classList.add('open');
+                        setTimeout(() => {
+                            const img = block.querySelector('img');
+                            img.style.opacity = '1';
+                            img.style.transform = 'scale(1)';
+                        }, 600);
+                    }, i * 600);
+                });
+
+                const totalAnimationTime = randomIndexes.length * 600 + 600;
+
+                setTimeout(() => {
+                    isAnimating = false; // Разрешаем нажатие
+                    startBtn.removeAttribute('disabled'); // Активируем кнопку
+                }, totalAnimationTime);
             });
 
-            const totalAnimationTime = randomIndexes.length * 600 + 600;
-
-            setTimeout(() => {
-                isAnimating = false; // Разрешаем нажатие
-                startBtn.removeAttribute('disabled'); // Активируем кнопку
-            }, totalAnimationTime);
+            updateCounter();
         });
-        updateCounter()
 
     </script>
 
