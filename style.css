@@ -395,7 +395,7 @@ body {
 .button {
     position: absolute;
     top: 20px;
-    right: 20px; /* Положение кнопки в правом верхнем углу */
+    left: 20px; /* Положение кнопки в правом верхнем углу */
     width: 60px;
     height: 60px;
     
