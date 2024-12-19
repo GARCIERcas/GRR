@@ -126,7 +126,10 @@ body {
     color: #6E96FF;
     text-align: center;
     font-size: 70px;
-    margin-bottom: -15px;
+    margin-bottom: -10px;
+    margin-left:30px ; /* смещение вверх на 10 пикселей */
+    width: 234px;
+    height: 106px;
     
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
@@ -363,4 +366,47 @@ body {
     .custom-button {
         width: 50%;
     }
+}
+.container23 {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#snowContainer {
+    position: absolute; /* Позволяет контейнеру снежинок перекрывать другие элементы */
+    top: 0; /* Начинаем с верхней части страницы */
+    left: 0; /* Начинаем с левой части страницы */
+    width: 100%; /* Ширина контейнера равна ширине окна */
+    height: 100%; /* Высота контейнера равна высоте окна */
+    pointer-events: none; /* Позволяет кликам проходить через контейнер */
+    z-index: 10; /* Устанавливаем высокий z-index, чтобы снежинки были над другими элементами */
+}
+
+.snowflake {
+    position: absolute; /* Позволяет снежинкам свободно перемещаться в пределах контейнера */
+    background: white; /* Цвет снежинок */
+    border-radius: 50%; /* Делаем снежинки круглыми */
+    pointer-events: none; /* Позволяет кликам проходить через снежинки */
+}
+
+.button {
+    position: absolute;
+    top: 20px;
+    right: 20px; /* Положение кнопки в правом верхнем углу */
+    width: 60px;
+    height: 60px;
+    
+    border: none;
+    border-radius: 50%;
+    
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    
+
 }
