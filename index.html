@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kenia&display=swap" rel="stylesheet">
-    <script async src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
@@ -311,6 +311,25 @@
             }, totalAnimationTime);
         });
         updateCounter()
+        const tg = window.Telegram.WebApp;
+
+    // Проверка версии
+        if (tg.version < 7.7) {
+            alert('Рекомендуем обновить Telegram для лучшей работы приложения.');
+        }
+
+    // Функция для развертывания в полный экран
+        function openFullScreen() {
+            tg.expand();
+        }
+
+    // Обработка события изменения размера
+        tg.onEvent('resize', function() {
+        // Ваш код для обработки изменения размера
+        });
+
+    // Вызов функции для развертывания
+        openFullScreen();
 
     </script>
 
