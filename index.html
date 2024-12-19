@@ -2,8 +2,9 @@
 <html lang="en">
 
 <head>
+    
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garcler</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,14 +14,15 @@
 </head>
 
 <body>
+    <img id="startButton" class="button" src="img/Frame 3.svg">
+    <img id="stopButton" style="display: none;" class="button" src="img/Frame 3.svg">
     
+    <div id="snowContainer"></div>
+    
+
     <div class="container">
         <header class="header">
-            <div class="header_container">
-                <p class="header_title">
-                    Garcler
-                </p>
-            </div>
+            <img class="header_title" src="img/Group 6.svg">
         </header>
         <main class="main">
             <div class="main_container">
@@ -172,7 +174,70 @@
 
 
     <script>
-        
+
+
+        let snowfallInterval;
+
+        document.getElementById('startButton').addEventListener('click', (event) => {
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+            startSnowfall();
+        });
+        document.getElementById('stopButton').addEventListener('click', (event) => {
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+            stopSnowfall();
+        });
+
+        function startSnowfall() {
+            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('stopButton').style.display = 'block';
+
+            snowfallInterval = setInterval(() => {
+                createSnowflake(document.getElementById('snowContainer'));
+            }, 70); // Создаем новую снежинку каждые 50 мс для большего количества снега
+        }
+
+        function stopSnowfall() {
+            clearInterval(snowfallInterval);
+            document.getElementById('startButton').style.display = 'block';
+            document.getElementById('stopButton').style.display = 'none';
+        }
+
+        function createSnowflake(container) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+
+            // Устанавливаем случайные размеры и позиции
+            const size = Math.random() * 5 + 2; // Размер от 2 до 7 пикселей
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${Math.random() * 100}vw`; // Случайная позиция по ширине
+            snowflake.style.opacity = Math.random(); // Случайная прозрачность
+
+            container.appendChild(snowflake);
+
+            // Анимация падения с эффектом ветра
+            animateSnowflake(snowflake);
+        }
+
+        function animateSnowflake(snowflake) {
+            const fallDuration = Math.random() * 3 + 2; // Случайная продолжительность падения от 2 до 5 секунд
+            const fallDistance = window.innerHeight + 50; // Падение ниже видимой области
+            const windEffect = (Math.random() - 0.5) * 100; // Случайное смещение по горизонтали
+
+            snowflake.animate([
+                { transform: `translateY(0) translateX(0)` },
+                { transform: `translateY(${fallDistance}px) translateX(${windEffect}px)` }
+            ], {
+                duration: fallDuration * 3500,
+                easing: 'linear',
+                fill: 'forwards'
+            });
+
+            // Удаляем снежинку после падения
+            setTimeout(() => {
+                snowflake.remove();
+            }, fallDuration * 3500);
+        }
 
         const values = [1, 3, 5, 7]; // Возможные значения ловушек
         let currentIndex = 0; // Индекс текущего значения
