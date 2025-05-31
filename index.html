@@ -1,338 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Garcler</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kenia&display=swap" rel="stylesheet">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Garcler</title>
+
+  <!-- Telegram WebApp API -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script> 
+
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      border: none;
+      overflow: hidden;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    a,
+    a:link,
+    a:visited {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+      font-size: inherit;
+      font-weight: inherit;
+    }
+
+    ul,
+    ul li {
+      list-style: none;
+    }
+
+    img {
+      vertical-align: top;
+    }
+
+    img,
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    input,
+    textarea,
+    button,
+    select {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      background-color: transparent;
+    }
+
+    button::-moz-focus-inner {
+      padding: 0;
+      border: 0;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--tg-theme-bg-color, #141414);
+      color: var(--tg-theme-text-color, #FFFFFF);
+      user-select: none;
+    }
+
+    .container {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .main_container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .header_title {
+      color: #6E96FF;
+      font-size: 40px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .playing_field {
+      margin-top: 20px;
+      background: #1E1E1E;
+      border-radius: 20px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      padding: 15px;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .playing_field_block {
+      position: relative;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .playing_field_block_animate {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #D9D9D9;
+      border-radius: 15px;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .playing_field_block img {
+      width: 70%;
+      height: 70%;
+      opacity: 0;
+      position: absolute;
+      transform: scale(0);
+      transition: opacity 0.8s ease, transform 0.5s ease;
+    }
+
+    .playing_field_block.open .playing_field_block_animate {
+      transform: scale(0);
+      opacity: 0;
+    }
+
+    .playing_field_block.open img {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .slider {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #1E1E1E;
+      padding: 10px 20px;
+      border-radius: 15px;
+      font-family: inherit;
+      color: #fff;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .slider-button {
+      font-size: 24px;
+      color: #ccc;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s;
+    }
+
+    .slider-button:hover {
+      color: #aaa;
+    }
+
+    .slider-content {
+      text-align: center;
+    }
+
+    .slider-content .number {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .slider-content .label {
+      font-size: 12px;
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .custom-button {
+      margin-top: 20px;
+      background-color: var(--tg-theme-button-color, #6E96FF);
+      color: var(--tg-theme-button-text-color, #fff);
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 16px;
+      padding: 14px 20px;
+      width: 100%;
+      max-width: 300px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-button:hover {
+      background-color: #4A73E4;
+    }
+
+    #snowContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .snowflake {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .button img {
+      width: 60%;
+      height: 60%;
+    }
+  </style>
 </head>
-
 <body>
-    <img id="startButton" class="button" src="img/Frame 3.png">
-    <img id="stopButton" style="display: none;" class="button" src="img/Frame 4.png">
-    
-    <div id="snowContainer"></div>
-    
 
-    <div class="container">
-        <header class="header">
-            <img class="header_title" src="img/Group 6.png">
-        </header>
-        <main class="main">
-            <div class="main_container">
-                <div class="main_block playing_field">
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+  <div id="snowContainer"></div>
+  <img id="startButton" class="button" src="img/Frame 3.png">
+  <img id="stopButton" style="display: none;" class="button" src="img/Frame 4.png">
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+  <div class="container">
+    <header class="header">
+      <div class="header_title">Garcler</div>
+    </header>
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    <main class="main_container">
+      <div class="playing_field" id="playingField">
+        <!-- Блоки будут генерироваться JS -->
+      </div>
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
+      <div class="slider">
+        <div class="slider-button" onclick="prevSlide()"><img src="img/стрелка влево.svg" alt="<"></div>
+        <div class="slider-content">
+          <div class="number" id="slider-number">3</div>
+          <div class="label">ловушек</div>
+        </div>
+        <div class="slider-button" onclick="nextSlide()"><img src="img/стрелка вправо.svg" alt=">"></div>
+      </div>
 
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+      <button class="custom-button" id="start-button">Старт</button>
+    </main>
+  </div>
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+  <script>
+    const fieldContainer = document.getElementById('playingField');
+    for (let i = 0; i < 25; i++) {
+      const block = document.createElement('div');
+      block.className = 'playing_field_block';
+      block.innerHTML = `
+        <div class="playing_field_block_animate"></div>
+        <img src="img/алмаз.svg" alt="Diamond">
+      `;
+      fieldContainer.appendChild(block);
+    }
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    const values = [1, 3, 5, 7];
+    let currentIndex = 0;
+    const slider = document.getElementById('slider-number');
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    function updateCounter() {
+      slider.textContent = values[currentIndex];
+    }
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
+    function prevSlide() {
+      if (currentIndex > 0) currentIndex--;
+      updateCounter();
+    }
 
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    function nextSlide() {
+      if (currentIndex < values.length - 1) currentIndex++;
+      updateCounter();
+    }
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    updateCounter();
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    const startBtn = document.getElementById('start-button');
+    let isAnimating = false;
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    startBtn.addEventListener('click', () => {
+      if (isAnimating) return;
+      isAnimating = true;
+      startBtn.setAttribute('disabled', true);
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
+      const trapCount = values[currentIndex];
+      const openCount = trapCount === 1 ? 10 : trapCount === 3 ? 5 : trapCount === 5 ? 4 : 3;
 
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+      const blocks = document.querySelectorAll('.playing_field_block');
+      const randomIndexes = [];
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+      while (randomIndexes.length < openCount) {
+        const index = Math.floor(Math.random() * blocks.length);
+        if (!randomIndexes.includes(index)) randomIndexes.push(index);
+      }
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+      blocks.forEach(block => {
+        block.classList.remove('open');
+        const img = block.querySelector('img');
+        img.style.opacity = '0';
+        img.style.transform = 'scale(0)';
+      });
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+      randomIndexes.forEach((index, i) => {
+        setTimeout(() => {
+          const block = blocks[index];
+          block.classList.add('open');
+          setTimeout(() => {
+            const img = block.querySelector('img');
+            img.style.opacity = '1';
+            img.style.transform = 'scale(1)';
+          }, 600);
+        }, i * 600);
+      });
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
+      setTimeout(() => {
+        isAnimating = false;
+        startBtn.removeAttribute('disabled');
+      }, randomIndexes.length * 600 + 600);
+    });
 
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    // Telegram WebApp
+    const tg = window.Telegram.WebApp;
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    if (tg.version < 7.7) {
+      alert('Обновите Telegram для лучшей работы.');
+    }
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    tg.ready();
+    tg.expand();
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    // Снежинки
+    let snowfallInterval;
 
-                        <img src="img/алмаз.svg" alt="Diamond">
-                    </div>
+    document.getElementById('startButton').addEventListener('click', (e) => {
+      e.preventDefault();
+      startSnowfall();
+    });
 
-                    <div class="playing_field_block">
-                        <div class="playing_field_block_animate"></div>
+    document.getElementById('stopButton').addEventListener('click', (e) => {
+      e.preventDefault();
+      stopSnowfall();
+    });
 
-                        <img src="img/алмаз.svg" alt="Diamond">
+    function startSnowfall() {
+      document.getElementById('startButton').style.display = 'none';
+      document.getElementById('stopButton').style.display = 'block';
 
-                    
-                    </div>
-                </div>
-                <div class="slider">
-                    <div class="slider-button" onclick="prevSlide()"><img src="img/стрелка влево.svg" alt="<"></div>
-                    <div class="slider-content">
-                        <div class="number" id="slider-number">3</div>
-                        <div class="label">ловушек</div>
-                    </div>
-                    <div class="slider-button" onclick="nextSlide()"><img src="img/стрелка вправо.svg" alt=">"></div>
-                </div>
-                
-                <button class="custom-button" id="start-button">старт</button>
-                
+      snowfallInterval = setInterval(() => {
+        createSnowflake(document.getElementById('snowContainer'));
+      }, 70);
+    }
 
-                
-            </div>
-        </main>
-    </div>
+    function stopSnowfall() {
+      clearInterval(snowfallInterval);
+      document.getElementById('startButton').style.display = 'block';
+      document.getElementById('stopButton').style.display = 'none';
+    }
 
+    function createSnowflake(container) {
+      const snowflake = document.createElement('div');
+      snowflake.className = 'snowflake';
+      const size = Math.random() * 5 + 2;
+      snowflake.style.width = `${size}px`;
+      snowflake.style.height = `${size}px`;
+      snowflake.style.left = `${Math.random() * 100}vw`;
+      snowflake.style.opacity = Math.random();
+      container.appendChild(snowflake);
+      animateSnowflake(snowflake);
+    }
 
-    <script>
+    function animateSnowflake(snowflake) {
+      const fallDuration = Math.random() * 3 + 2;
+      const fallDistance = window.innerHeight + 50;
+      const windEffect = (Math.random() - 0.5) * 100;
 
+      snowflake.animate([
+        { transform: `translateY(0) translateX(0)` },
+        { transform: `translateY(${fallDistance}px) translateX(${windEffect}px)` }
+      ], {
+        duration: fallDuration * 3500,
+        easing: 'linear',
+        fill: 'forwards'
+      });
 
-        let snowfallInterval;
-
-        document.getElementById('startButton').addEventListener('click', (event) => {
-            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
-            startSnowfall();
-        });
-        document.getElementById('stopButton').addEventListener('click', (event) => {
-            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
-            stopSnowfall();
-        });
-
-        function startSnowfall() {
-            document.getElementById('startButton').style.display = 'none';
-            document.getElementById('stopButton').style.display = 'block';
-
-            snowfallInterval = setInterval(() => {
-                createSnowflake(document.getElementById('snowContainer'));
-            }, 70); // Создаем новую снежинку каждые 50 мс для большего количества снега
-        }
-
-        function stopSnowfall() {
-            clearInterval(snowfallInterval);
-            document.getElementById('startButton').style.display = 'block';
-            document.getElementById('stopButton').style.display = 'none';
-        }
-
-        function createSnowflake(container) {
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-
-            // Устанавливаем случайные размеры и позиции
-            const size = Math.random() * 5 + 2; // Размер от 2 до 7 пикселей
-            snowflake.style.width = `${size}px`;
-            snowflake.style.height = `${size}px`;
-            snowflake.style.left = `${Math.random() * 100}vw`; // Случайная позиция по ширине
-            snowflake.style.opacity = Math.random(); // Случайная прозрачность
-
-            container.appendChild(snowflake);
-
-            // Анимация падения с эффектом ветра
-            animateSnowflake(snowflake);
-        }
-
-        function animateSnowflake(snowflake) {
-            const fallDuration = Math.random() * 3 + 2; // Случайная продолжительность падения от 2 до 5 секунд
-            const fallDistance = window.innerHeight + 50; // Падение ниже видимой области
-            const windEffect = (Math.random() - 0.5) * 100; // Случайное смещение по горизонтали
-
-            snowflake.animate([
-                { transform: `translateY(0) translateX(0)` },
-                { transform: `translateY(${fallDistance}px) translateX(${windEffect}px)` }
-            ], {
-                duration: fallDuration * 3500,
-                easing: 'linear',
-                fill: 'forwards'
-            });
-
-            // Удаляем снежинку после падения
-            setTimeout(() => {
-                snowflake.remove();
-            }, fallDuration * 3500);
-        }
-
-        const values = [1, 3, 5, 7]; // Возможные значения ловушек
-        let currentIndex = 0; // Индекс текущего значения
-        const slider = document.getElementById('slider-number');
-        const fieldBlocks = document.querySelectorAll('.playing_field_block'); // Все клетки
-        let isAnimating = false;
-
-        function updateCounter() {
-            slider.textContent = values[currentIndex];
-        }
-
-        function prevSlide() {
-            if (currentIndex > 0) {
-                currentIndex--;
-            }
-            updateCounter();
-        }
-
-        function nextSlide() {
-            if (currentIndex < values.length - 1) {
-                currentIndex++;
-            }
-            updateCounter();
-        }
-
-        // Логика для кнопки "старт"
-        const startBtn = document.querySelector('.custom-button');
-        startBtn.addEventListener('click', () => {
-            if (isAnimating) return; // Если анимация ещё идёт, игнорируем нажатие
-
-            isAnimating = true; // Блокируем повторное нажатие
-            startBtn.setAttribute('disabled', true); // Отключаем кнопку
-            const trapCount = values[currentIndex]; // Текущее количество ловушек
-            const openCount = trapCount === 1 ? 10 : trapCount === 3 ? 5 : trapCount === 5 ? 4 : 3; // Количество клеток
-            const randomIndexes = [];
-
-            // Генерируем уникальные случайные индексы для открытия клеток
-            while (randomIndexes.length < openCount) {
-                const randomIndex = Math.floor(Math.random() * fieldBlocks.length);
-                if (!randomIndexes.includes(randomIndex)) {
-                    randomIndexes.push(randomIndex);
-                }
-            }
-
-            // Сбрасываем ранее открытые клетки
-            fieldBlocks.forEach(block => {
-                block.classList.remove('open');
-                const img = block.querySelector('img');
-                img.style.opacity = '0';
-                img.style.transform = 'scale(0)';
-            });
-
-            // Анимация открытия клеток
-            randomIndexes.forEach((index, i) => {
-                setTimeout(() => {
-                    const block = fieldBlocks[index];
-                    block.classList.add('open');
-                    setTimeout(() => {
-                        const img = block.querySelector('img');
-                        img.style.opacity = '1';
-                        img.style.transform = 'scale(1)';
-                    }, 600);
-                }, i * 600);
-            });
-
-            const totalAnimationTime = randomIndexes.length * 600 + 600;
-
-            setTimeout(() => {
-                isAnimating = false; // Разрешаем нажатие
-                startBtn.removeAttribute('disabled'); // Активируем кнопку
-            }, totalAnimationTime);
-        });
-        updateCounter()
-        const tg = window.Telegram.WebApp;
-
-    // Проверка версии
-        if (tg.version < 7.7) {
-            alert('Рекомендуем обновить Telegram для лучшей работы приложения.');
-        }
-
-    // Функция для развертывания в полный экран
-        function openFullScreen() {
-            tg.expand();
-        }
-
-    // Обработка события изменения размера
-        tg.onEvent('resize', function() {
-        // Ваш код для обработки изменения размера
-        });
-
-    // Вызов функции для развертывания
-        openFullScreen();
-
-    </script>
-
+      setTimeout(() => {
+        snowflake.remove();
+      }, fallDuration * 3500);
+    }
+  </script>
 </body>
-
 </html>
