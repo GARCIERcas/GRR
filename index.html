@@ -1,92 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Garcler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Garcler Summer</title>
 
   <!-- Telegram WebApp API -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script> 
 
   <style>
+    /* Reset */
     * {
       padding: 0;
       margin: 0;
       border: none;
       overflow: hidden;
     }
-
     *,
     *::before,
     *::after {
       box-sizing: border-box;
     }
-
-    a,
-    a:link,
-    a:visited {
+    a, a:link, a:visited {
       text-decoration: none;
     }
-
     a:hover {
       text-decoration: none;
     }
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    p {
+    aside, nav, footer, header, section, main {
+      display: block;
+    }
+    h1, h2, h3, h4, h5, h6, p {
       font-size: inherit;
       font-weight: inherit;
     }
-
-    ul,
-    ul li {
+    ul, ul li {
       list-style: none;
     }
-
     img {
       vertical-align: top;
     }
-
-    img,
-    svg {
+    img, svg {
       max-width: 100%;
       height: auto;
     }
-
-    input,
-    textarea,
-    button,
-    select {
+    input, textarea, button, select {
       font-family: inherit;
       font-size: inherit;
       color: inherit;
       background-color: transparent;
     }
-
     button::-moz-focus-inner {
       padding: 0;
       border: 0;
     }
-
     label {
       cursor: pointer;
     }
 
+    /* Body */
     body {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--tg-theme-bg-color, #141414);
-      color: var(--tg-theme-text-color, #FFFFFF);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(to bottom, #FFF5E4, #A0E7E5);
+      color: #333;
       user-select: none;
     }
 
+    /* Container */
     .container {
       height: 100vh;
       display: flex;
@@ -96,33 +79,31 @@
       padding: 20px;
     }
 
-    .main_container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      max-width: 400px;
-    }
-
+    /* Header */
     .header_title {
-      color: #6E96FF;
-      font-size: 40px;
-      margin-bottom: 20px;
-      text-align: center;
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      width: 234px;
+      height: 106px;
+      margin-bottom: -10px;
+      margin-left: 30px;
     }
 
+    /* Playing Field */
     .playing_field {
       margin-top: 20px;
-      background: #1E1E1E;
-      border-radius: 20px;
+      background: #FFEEDD;
+      border-radius: 30px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      padding: 15px;
-      width: 100%;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      gap: 13px;
+      padding: 20px;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .main_container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
 
     .playing_field_block {
@@ -134,18 +115,18 @@
     }
 
     .playing_field_block_animate {
+      background: #FFD580;
       position: absolute;
+      border-radius: 15px;
       width: 100%;
       height: 100%;
-      background: #D9D9D9;
-      border-radius: 15px;
       transition: transform 0.6s ease, opacity 0.6s ease;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+      box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.1);
     }
 
     .playing_field_block img {
-      width: 70%;
-      height: 70%;
+      width: 90%;
+      height: 90%;
       opacity: 0;
       position: absolute;
       transform: scale(0);
@@ -162,30 +143,30 @@
       transform: scale(1);
     }
 
+    /* Slider */
     .slider {
       margin-top: 20px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      background-color: #1E1E1E;
-      padding: 10px 20px;
+      background-color: #FFEEDD;
+      padding: 8px 15px;
       border-radius: 15px;
-      font-family: inherit;
+      font-family: Arial, sans-serif;
       color: #fff;
-      width: 100%;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      gap: 20px;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
     }
 
     .slider-button {
       font-size: 24px;
-      color: #ccc;
+      color: #FFA500;
       cursor: pointer;
       user-select: none;
       transition: color 0.3s;
     }
 
     .slider-button:hover {
-      color: #aaa;
+      color: #e69500;
     }
 
     .slider-content {
@@ -194,36 +175,41 @@
 
     .slider-content .number {
       font-size: 24px;
-      font-weight: 700;
+      font-weight: 900;
+      color: #FFA500;
     }
 
     .slider-content .label {
-      font-size: 12px;
+      font-size: 14px;
       color: #aaa;
-      font-weight: 500;
+      font-weight: 700;
     }
 
+    /* Button */
     .custom-button {
-      margin-top: 20px;
-      background-color: var(--tg-theme-button-color, #6E96FF);
-      color: var(--tg-theme-button-text-color, #fff);
-      font-size: 18px;
-      font-weight: 600;
-      border-radius: 16px;
-      padding: 14px 20px;
-      width: 100%;
-      max-width: 300px;
+      margin: 20px;
+      background-color: #FFA500;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      line-height: normal;
+      border-radius: 20px;
+      padding: 8.5px 0;
+      width: 189.381px;
+      height: 97px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
     }
 
     .custom-button:hover {
-      background-color: #4A73E4;
+      background-color: #e69500;
     }
 
+    /* Snowflake */
     #snowContainer {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
@@ -239,58 +225,100 @@
       pointer-events: none;
     }
 
-    .button {
-      position: fixed;
+    /* Sun and Clouds */
+    .sun {
+      position: absolute;
       top: 20px;
       right: 20px;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
+      background: yellow;
       border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px orange;
+    }
+
+    .cloud {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 40px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+
+    /* Floating Button */
+    .button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 55px;
+      height: 55px;
+      border: none;
+      border-radius: 50%;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       cursor: pointer;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
       z-index: 10;
     }
 
-    .button img {
-      width: 60%;
-      height: 60%;
+    /* Responsive */
+    @media (max-width: 768px) {
+      .playing_field {
+        width: 90%;
+      }
+      .custom-button {
+        width: 40%;
+        font-size: 24px;
+        height: 70px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div id="snowContainer"></div>
+  <!-- Солнце и облако -->
+  <div class="sun"></div>
+  <div class="cloud"></div>
+
+  <!-- Кнопки снега -->
   <img id="startButton" class="button" src="img/Frame 3.png">
   <img id="stopButton" style="display: none;" class="button" src="img/Frame 4.png">
 
+  <!-- Контейнер для снежинок -->
+  <div id="snowContainer"></div>
+
+  <!-- Основной контент -->
   <div class="container">
     <header class="header">
-      <div class="header_title">Garcler</div>
+      <img class="header_title" src="img/Group 6.png" alt="Logo">
     </header>
-
-    <main class="main_container">
-      <div class="playing_field" id="playingField">
-        <!-- Блоки будут генерироваться JS -->
-      </div>
-
-      <div class="slider">
-        <div class="slider-button" onclick="prevSlide()"><img src="img/стрелка влево.svg" alt="<"></div>
-        <div class="slider-content">
-          <div class="number" id="slider-number">3</div>
-          <div class="label">ловушек</div>
+    <main class="main">
+      <div class="main_container">
+        <div class="playing_field" id="playingField">
+          <!-- Блоки будут генерироваться JS -->
         </div>
-        <div class="slider-button" onclick="nextSlide()"><img src="img/стрелка вправо.svg" alt=">"></div>
+        <div class="slider">
+          <div class="slider-button" onclick="prevSlide()">⬅️</div>
+          <div class="slider-content">
+            <div class="number" id="slider-number">3</div>
+            <div class="label">ловушек</div>
+          </div>
+          <div class="slider-button" onclick="nextSlide()">➡️</div>
+        </div>
+        <button class="custom-button" id="start-button">Старт</button>
       </div>
-
-      <button class="custom-button" id="start-button">Старт</button>
     </main>
   </div>
 
   <script>
-    const fieldContainer = document.getElementById('playingField');
+    // Генерация игрового поля
+    const field = document.getElementById('playingField');
     for (let i = 0; i < 25; i++) {
       const block = document.createElement('div');
       block.className = 'playing_field_block';
@@ -298,15 +326,16 @@
         <div class="playing_field_block_animate"></div>
         <img src="img/алмаз.svg" alt="Diamond">
       `;
-      fieldContainer.appendChild(block);
+      field.appendChild(block);
     }
 
+    // Слайдер ловушек
     const values = [1, 3, 5, 7];
     let currentIndex = 0;
-    const slider = document.getElementById('slider-number');
+    const sliderNumber = document.getElementById('slider-number');
 
     function updateCounter() {
-      slider.textContent = values[currentIndex];
+      sliderNumber.textContent = values[currentIndex];
     }
 
     function prevSlide() {
@@ -321,13 +350,14 @@
 
     updateCounter();
 
+    // Логика кнопки "Старт"
     const startBtn = document.getElementById('start-button');
     let isAnimating = false;
 
     startBtn.addEventListener('click', () => {
       if (isAnimating) return;
       isAnimating = true;
-      startBtn.setAttribute('disabled', true);
+      startBtn.disabled = true;
 
       const trapCount = values[currentIndex];
       const openCount = trapCount === 1 ? 10 : trapCount === 3 ? 5 : trapCount === 5 ? 4 : 3;
@@ -340,10 +370,10 @@
         if (!randomIndexes.includes(index)) randomIndexes.push(index);
       }
 
-      blocks.forEach(block => {
-        block.classList.remove('open');
-        const img = block.querySelector('img');
-        img.style.opacity = '0';
+      blocks.forEach(b => {
+        b.classList.remove('open');
+        const img = b.querySelector('img');
+        img.style.opacity = 0;
         img.style.transform = 'scale(0)';
       });
 
@@ -353,7 +383,7 @@
           block.classList.add('open');
           setTimeout(() => {
             const img = block.querySelector('img');
-            img.style.opacity = '1';
+            img.style.opacity = 1;
             img.style.transform = 'scale(1)';
           }, 600);
         }, i * 600);
@@ -361,19 +391,9 @@
 
       setTimeout(() => {
         isAnimating = false;
-        startBtn.removeAttribute('disabled');
+        startBtn.disabled = false;
       }, randomIndexes.length * 600 + 600);
     });
-
-    // Telegram WebApp
-    const tg = window.Telegram.WebApp;
-
-    if (tg.version < 7.7) {
-      alert('Обновите Telegram для лучшей работы.');
-    }
-
-    tg.ready();
-    tg.expand();
 
     // Снежинки
     let snowfallInterval;
@@ -433,6 +453,16 @@
         snowflake.remove();
       }, fallDuration * 3500);
     }
+
+    // Telegram WebApp
+    const tg = window.Telegram.WebApp;
+
+    if (tg.version < 7.7) {
+      alert('Обновите Telegram для лучшей работы.');
+    }
+
+    tg.ready();
+    tg.expand();
   </script>
 </body>
 </html>
